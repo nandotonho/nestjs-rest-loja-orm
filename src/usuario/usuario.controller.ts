@@ -1,0 +1,61 @@
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put
+} from '@nestjs/common';
+import { CriaUsuarioDTO } from './dto/CriaUsuario.dto';
+import { AtualizaUsuarioDTO } from './dto/AtualizaUsuario.dto';
+import { UsuarioService } from './usuario.service';
+import { UsuarioEntity } from './usuario.entity';
+import { v4 as uuid } from 'uuid';
+import { ListaUsuarioDTO } from './dto/ListaUsuario.dto';
+
+@Controller('/usuarios')
+export class UsuarioController {
+  constructor(private usuarioService: UsuarioService) {}
+
+  @Post()
+  public async criaUsuario(@Body() dadosDoUsuario: CriaUsuarioDTO) {
+    const usuarioEntity: UsuarioEntity = new UsuarioEntity();
+    usuarioEntity.nome = dadosDoUsuario.nome;
+    usuarioEntity.email = dadosDoUsuario.email;
+    usuarioEntity.senha = dadosDoUsuario.senha;
+    usuarioEntity.id = uuid();
+
+    await this.usuarioService.criaUsuario(usuarioEntity);
+
+    return {
+      usario: new ListaUsuarioDTO(usuarioEntity.id, usuarioEntity.nome),
+      mensagem: 'usuário criado com sucesso'
+    };
+  }
+
+  @Get()
+  public async listaUsuario() {
+    return this.usuarioService.listaUsuario();
+  }
+
+  @Put('/:id')
+  public async atualizaUsuario(@Param('id') id: string, @Body() novosDados: AtualizaUsuarioDTO) {
+    const usuarioAtualizado = await this.usuarioService.atualizaUsuario(id, novosDados);
+
+    return {
+      usuario: usuarioAtualizado,
+      mensagem: 'usuário atualizado com sucesso'
+    };
+  }
+
+  @Delete('/:id')
+  public async removeUsuario(@Param('id') id: string) {
+    const usuarioRemovido = await this.usuarioService.removeUsuario(id);
+
+    return {
+      usuario: usuarioRemovido,
+      mensagem: 'usuário removido com sucesso'
+    };
+  }
+}
