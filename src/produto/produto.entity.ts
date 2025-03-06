@@ -7,11 +7,11 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn
-} from "typeorm";
-import { ProdutoCaracteristicaEntity } from "./produto-caracteristica.entity";
-import { ProdutoImagemEntity } from "./produto-imagem.entity";
-import { UsuarioEntity } from "src/usuario/usuario.entity";
-import { FornecedorEntity } from "src/fornecedor/fornecedor.entity";
+} from 'typeorm';
+import { ProdutoCaracteristicaEntity } from './produto-caracteristica.entity';
+import { ProdutoImagemEntity } from './produto-imagem.entity';
+import { UsuarioEntity } from 'src/usuario/usuario.entity';
+import { FornecedorEntity } from 'src/fornecedor/fornecedor.entity';
 
 @Entity({ name: 'produtos' })
 export class ProdutoEntity {

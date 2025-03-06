@@ -1,10 +1,10 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
-import { ProdutoEntity } from "./produto.entity";
-import { AtualizaProdutoDTO } from "./dto/AtualizaProduto.dto";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
-import { isUUID } from "class-validator";
-import { ProdutoRepository } from "./produto.repository";
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { ProdutoEntity } from './produto.entity';
+import { AtualizaProdutoDTO } from './dto/AtualizaProduto.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { isUUID } from 'class-validator';
+import { ProdutoRepository } from './produto.repository';
 
 @Injectable()
 export class ProdutoService {
