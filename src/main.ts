@@ -1,7 +1,8 @@
-import { NestFactory } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { useContainer } from 'class-validator';
+import { FiltroDeExcecaoGlobal } from './filtros/filtro-de-excecao-global';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

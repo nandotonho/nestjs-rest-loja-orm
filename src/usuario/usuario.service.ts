@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ListaUsuarioDTO } from './dto/ListaUsuario.dto';
 import { UsuarioEntity } from './usuario.entity';
@@ -15,6 +15,9 @@ export class UsuarioService {
   ) {}
 
   public async criaUsuario(dadosDoUsuario: CriaUsuarioDTO) {
+    if (await this.existeComEmail(dadosDoUsuario.email)) {
+      throw new ConflictException('Já existe um usuário com este e-mail')
+    }
     const usuarioEntity: UsuarioEntity = new UsuarioEntity();
 
     Object.assign(usuarioEntity, dadosDoUsuario as UsuarioEntity);

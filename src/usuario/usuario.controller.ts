@@ -1,5 +1,6 @@
 import {
   Body,
+  Catch,
   Controller,
   Delete,
   Get,
@@ -13,6 +14,7 @@ import { UsuarioService } from './usuario.service';
 import { ListaUsuarioDTO } from './dto/ListaUsuario.dto';
 
 @Controller('/usuarios')
+@Catch()
 export class UsuarioController {
   constructor(private usuarioService: UsuarioService) {}
 
@@ -49,5 +51,9 @@ export class UsuarioController {
       usuario: usuarioRemovido,
       mensagem: 'usuário removido com sucesso'
     };
+  }
+
+  catch(excecao: unknown) {
+    console.error(excecao);
   }
 }
