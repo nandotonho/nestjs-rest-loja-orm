@@ -10,17 +10,13 @@ import {
 } from 'typeorm';
 import { ProdutoCaracteristicaEntity } from './produto-caracteristica.entity';
 import { ProdutoImagemEntity } from './produto-imagem.entity';
-import { UsuarioEntity } from 'src/usuario/usuario.entity';
-import { FornecedorEntity } from 'src/fornecedor/fornecedor.entity';
+import { FornecedorEntity } from '../fornecedor/fornecedor.entity';
+import { ItemPedidoEntity } from '../pedido/itempedido.entity';
 
 @Entity({ name: 'produtos' })
 export class ProdutoEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
-  @Column({ name: 'usuario_id', length: 100, nullable: false })
-  @ManyToOne(() => UsuarioEntity, (usuario) => usuario.id)
-  usuarioId: string;
 
   @Column({ name: 'nome', length: 100, nullable: false })
   nome: string;
@@ -37,17 +33,20 @@ export class ProdutoEntity {
   @Column({ name: 'categoria', length: 100, nullable: false })
   categoria: string;
 
-  @OneToMany(() => ProdutoCaracteristicaEntity, (caracteristicas) => caracteristicas.produto,
+  @OneToMany(() => ProdutoCaracteristicaEntity, (caracteristica) => caracteristica.produto,
     { cascade: true, eager: true })
   caracteristicas: ProdutoCaracteristicaEntity[];
 
-  @OneToMany(() => ProdutoImagemEntity, (imagens) => imagens.produto,
+  @OneToMany(() => ProdutoImagemEntity, (imagem) => imagem.produto,
     { cascade: true, eager: true })
   imagens: ProdutoImagemEntity[];
 
   @ManyToOne(() => FornecedorEntity, (fornecedor) => fornecedor.produtos,
     { cascade: false, eager: true, nullable: true })
   fornecedor: FornecedorEntity;
+
+  @OneToMany(() => ItemPedidoEntity, (itemPedido) => itemPedido.produto)
+  itensPedido: ItemPedidoEntity[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: string;

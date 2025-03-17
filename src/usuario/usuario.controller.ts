@@ -10,8 +10,6 @@ import {
 import { CriaUsuarioDTO } from './dto/CriaUsuario.dto';
 import { AtualizaUsuarioDTO } from './dto/AtualizaUsuario.dto';
 import { UsuarioService } from './usuario.service';
-import { UsuarioEntity } from './usuario.entity';
-import { v4 as uuid } from 'uuid';
 import { ListaUsuarioDTO } from './dto/ListaUsuario.dto';
 
 @Controller('/usuarios')
@@ -20,16 +18,10 @@ export class UsuarioController {
 
   @Post()
   public async criaUsuario(@Body() dadosDoUsuario: CriaUsuarioDTO) {
-    const usuarioEntity: UsuarioEntity = new UsuarioEntity();
-    usuarioEntity.nome = dadosDoUsuario.nome;
-    usuarioEntity.email = dadosDoUsuario.email;
-    usuarioEntity.senha = dadosDoUsuario.senha;
-    usuarioEntity.id = uuid();
-
-    await this.usuarioService.criaUsuario(usuarioEntity);
+    const usuarioCriado = await this.usuarioService.criaUsuario(dadosDoUsuario);
 
     return {
-      usario: new ListaUsuarioDTO(usuarioEntity.id, usuarioEntity.nome),
+      usario: new ListaUsuarioDTO(usuarioCriado.id, usuarioCriado.nome),
       mensagem: 'usuário criado com sucesso'
     };
   }

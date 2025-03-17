@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { isUUID } from 'class-validator';
 import { ProdutoRepository } from './produto.repository';
+import { CriaProdutoDTO } from './dto/CriaProduto.dto';
 
 @Injectable()
 export class ProdutoService {
@@ -14,8 +15,14 @@ export class ProdutoService {
     private readonly produtoCustomRepository: ProdutoRepository
   ) {}
 
-  public async criaProduto(produtoEntity: ProdutoEntity) {
+  public async criaProduto(dadosDoProduto: CriaProdutoDTO) {
+    const produtoEntity = new ProdutoEntity();
+
+    Object.assign(produtoEntity, dadosDoProduto as ProdutoEntity);
+
     await this.produtoRepository.save(produtoEntity);
+
+    return produtoEntity;
   }
 
   public async listaProduto() {

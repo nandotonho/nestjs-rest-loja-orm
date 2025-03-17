@@ -12,6 +12,6 @@ export class FornecedorEntity {
   @Column({ name: 'cnpj', length: 11, nullable: false })
   cnpj: string;
 
-  @OneToMany(() => ProdutoEntity, (produtos) => produtos.fornecedor)
+  @OneToMany(() => ProdutoEntity, (produto) => produto.fornecedor)
   produtos: ProdutoEntity[];
 }

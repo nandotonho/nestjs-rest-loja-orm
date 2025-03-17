@@ -10,8 +10,6 @@ import {
 import { CriaProdutoDTO } from './dto/CriaProduto.dto';
 import { AtualizaProdutoDTO } from './dto/AtualizaProduto.dto';
 import { ProdutoService } from './produto.service';
-import { v4 as uuid } from "uuid";
-import { ProdutoEntity } from './produto.entity';
 
 @Controller('/produtos')
 export class ProdutoController {
@@ -19,21 +17,10 @@ export class ProdutoController {
 
   @Post()
   public async criaProduto(@Body() dadosDoProduto: CriaProdutoDTO) {
-    const produtoEntity = new ProdutoEntity();
-    produtoEntity.usuarioId = dadosDoProduto.usuarioId;
-    produtoEntity.nome = dadosDoProduto.nome;
-    produtoEntity.valor = dadosDoProduto.valor;
-    produtoEntity.quantidadeDisponivel = dadosDoProduto.quantidadeDisponivel;
-    produtoEntity.descricao = dadosDoProduto.descricao;
-    produtoEntity.caracteristicas = dadosDoProduto.caracteristicas;
-    produtoEntity.imagens = dadosDoProduto.imagens;
-    produtoEntity.categoria = dadosDoProduto.categoria;
-    produtoEntity.id = uuid();
-
-    await this.produtoService.criaProduto(produtoEntity);
+    const produtoCriado = await this.produtoService.criaProduto(dadosDoProduto);
 
     return {
-      produto: produtoEntity,
+      produto: produtoCriado,
       mensagem: 'produto criado com sucesso'
     };
   }
