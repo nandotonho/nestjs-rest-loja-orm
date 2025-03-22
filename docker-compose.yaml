@@ -40,5 +40,5 @@
         driver: bridge
     
     volumes:
-        postgres:
-        redis:
+      postgres:
+      redis:

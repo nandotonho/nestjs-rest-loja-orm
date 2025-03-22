@@ -8,7 +8,7 @@ import { PedidoModule } from './modulos/pedido/pedido.module';
 import { APP_FILTER } from '@nestjs/core';
 import { FiltroDeExcecaoGlobal } from './recursos/filtros/filtro-de-excecao-global';
 import { CacheModule } from '@nestjs/cache-manager';
-import { redisStore } from 'cache-manager-redis-yet';
+import { redisStore } from 'cache-manager-redis-store';
 
 @Module({
   imports: [
@@ -24,9 +24,9 @@ import { redisStore } from 'cache-manager-redis-yet';
     PedidoModule,
     CacheModule.registerAsync({
       useFactory: async () => ({
-        store: await redisStore({ ttl: 60 * 1000 })
+        store: await redisStore({ ttl: 60 * 1000 }) // Tempo de expiração do cache (1 m aqui)
       }),
-      isGlobal: true
+      isGlobal: true // Para ter acesso ao CacheModule em toda a aplicação
     })
   ],
   controllers: [],
