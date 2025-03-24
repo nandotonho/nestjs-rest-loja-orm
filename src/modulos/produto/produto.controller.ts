@@ -15,17 +15,24 @@ import { ProdutoService } from './produto.service';
 import { CACHE_MANAGER, CacheInterceptor } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { ProdutoEntity } from './produto.entity';
+import { CustomLogger } from 'src/recursos/customLogger/custom-logger.service';
 
 @Controller('/produtos')
 export class ProdutoController {
   constructor(
     private readonly produtoService: ProdutoService,
-    @Inject(CACHE_MANAGER) private gerenciadorDeCache: Cache
-  ) {}
+    @Inject(CACHE_MANAGER) private gerenciadorDeCache: Cache,
+    private readonly logger: CustomLogger
+  ) {
+    this.logger.setContext('ProdutoController');
+  }
 
   @Post()
   public async criaProduto(@Body() dadosDoProduto: CriaProdutoDTO) {
     const produtoCriado = await this.produtoService.criaProduto(dadosDoProduto);
+
+    this.logger.logColorido(produtoCriado);
+    this.logger.logEmArquivo(produtoCriado);
 
     return {
       produto: produtoCriado,
@@ -41,7 +48,9 @@ export class ProdutoController {
 
   @Get('/:id')
   public async listaUmProduto(@Param('id') id: string) {
-    let produto = await this.gerenciadorDeCache.get<ProdutoEntity>(`produto-${id}`);
+    let produto = await this.gerenciadorDeCache.get<ProdutoEntity>(
+      `produto-${id}`
+    );
 
     if (!produto) {
       produto = await this.produtoService.buscaPorId(id);
@@ -56,8 +65,14 @@ export class ProdutoController {
   }
 
   @Put('/:id')
-  public async atualizaProduto(@Param('id') id: string, @Body() novosDados: AtualizaProdutoDTO) {
-    const produtoAtualizado = await this.produtoService.atualizaProduto(id, novosDados);
+  public async atualizaProduto(
+    @Param('id') id: string,
+    @Body() novosDados: AtualizaProdutoDTO
+  ) {
+    const produtoAtualizado = await this.produtoService.atualizaProduto(
+      id,
+      novosDados
+    );
 
     return {
       produto: produtoAtualizado,

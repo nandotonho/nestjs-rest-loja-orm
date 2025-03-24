@@ -75,4 +75,14 @@ export class UsuarioService {
 
     return possiveisUsuarios.length > 0;
   }
+
+  public async buscaPorEmail(email: string) {
+    const possivelUsuario = await this.usuarioRepository.findOneBy({ email: email });
+
+    if (!possivelUsuario) {
+      throw new NotFoundException('Email não encontrado');
+    }
+
+    return possivelUsuario;
+  }
 }

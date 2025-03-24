@@ -1,7 +1,8 @@
 import {
   BadRequestException,
   Injectable,
-  NotFoundException
+  NotFoundException,
+  UnauthorizedException
 } from '@nestjs/common';
 import { CriaPedidoDTO } from './dto/CriaPedido.dto';
 import { AtualizaPedidoDTO } from './dto/AtualizaPedido.dto';
@@ -69,9 +70,9 @@ export class PedidoService {
       if (itemPedidoEntity.produto.quantidadeDisponivel < 0) {
         throw new BadRequestException(
           'Quantidade insuficiente do produto cujo id é ' +
-          `${itemPedidoEntity.produto.id}: ` +
-          `solicitação de ${itemPedido.quantidade}, ` +
-          `mas há ${itemPedidoEntity.produto.quantidadeDisponivel + itemPedidoEntity.quantidade} apenas`
+            `${itemPedidoEntity.produto.id}: ` +
+            `solicitação de ${itemPedido.quantidade}, ` +
+            `mas há ${itemPedidoEntity.produto.quantidadeDisponivel + itemPedidoEntity.quantidade} apenas`,
         );
       }
 
@@ -90,7 +91,9 @@ export class PedidoService {
   }
 
   private async buscaUsuario(usuarioId: string) {
-    const possivelUsuario = await this.usuarioRepository.findOneBy({ id: usuarioId});
+    const possivelUsuario = await this.usuarioRepository.findOneBy({
+      id: usuarioId
+    });
 
     if (!possivelUsuario) {
       throw new NotFoundException('Usuário não existe');
@@ -104,7 +107,7 @@ export class PedidoService {
       throw new NotFoundException('Usuário não existe');
     }
 
-    const usuario = await this.buscaUsuario(usuarioId);
+    await this.buscaUsuario(usuarioId);
 
     const pedidos = await this.pedidoRepository.find({
       where: {
@@ -118,13 +121,22 @@ export class PedidoService {
     return pedidos;
   }
 
-  async atualizaPedido(id: string, novosDados: AtualizaPedidoDTO) {
-    const possivelPedido = await this.pedidoRepository.findOneBy({ id: id });
-
-    // throw new Error('Simulando erro de banco de dados...');
+  async atualizaPedido(
+    id: string,
+    novosDados: AtualizaPedidoDTO,
+    usuarioId: string
+  ) {
+    const possivelPedido = await this.pedidoRepository.findOne({
+      where: { id: id },
+      relations: { usuario: true }
+    });
 
     if (!possivelPedido) {
       throw new NotFoundException('Pedido não existe');
+    }
+
+    if (possivelPedido.usuario.id !== usuarioId) {
+      throw new UnauthorizedException('Pedido não existe');
     }
 
     Object.assign(possivelPedido, novosDados);

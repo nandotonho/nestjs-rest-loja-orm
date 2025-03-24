@@ -1,3 +1,4 @@
+import { Exclude, Expose } from 'class-transformer';
 import { PedidoEntity } from '../pedido/pedido.entity';
 import { Column,
   CreateDateColumn,
@@ -8,11 +9,13 @@ import { Column,
   UpdateDateColumn
 } from 'typeorm';
 
+@Exclude()
 @Entity({ name: 'usuarios' })
 export class UsuarioEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Expose()
   @Column({ name: 'nome', length: 100, nullable: false })
   nome: string;
 

@@ -33,16 +33,23 @@ export class ProdutoEntity {
   @Column({ name: 'categoria', length: 100, nullable: false })
   categoria: string;
 
-  @OneToMany(() => ProdutoCaracteristicaEntity, (caracteristica) => caracteristica.produto,
+  @OneToMany(
+    () => ProdutoCaracteristicaEntity,
+    (caracteristica) => caracteristica.produto,
     { cascade: true, eager: true })
   caracteristicas: ProdutoCaracteristicaEntity[];
 
-  @OneToMany(() => ProdutoImagemEntity, (imagem) => imagem.produto,
-    { cascade: true, eager: true })
+  @OneToMany(() => ProdutoImagemEntity, (imagem) => imagem.produto, {
+    cascade: true,
+    eager: true
+  })
   imagens: ProdutoImagemEntity[];
 
-  @ManyToOne(() => FornecedorEntity, (fornecedor) => fornecedor.produtos,
-    { cascade: false, eager: true, nullable: true })
+  @ManyToOne(() => FornecedorEntity, (fornecedor) => fornecedor.produtos, {
+    cascade: false,
+    eager: true,
+    nullable: true
+  })
   fornecedor: FornecedorEntity;
 
   @OneToMany(() => ItemPedidoEntity, (itemPedido) => itemPedido.produto)
