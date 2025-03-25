@@ -1,18 +1,21 @@
 import {
   Body,
+  CacheTTL,
   Catch,
   Controller,
   Delete,
   Get,
   Param,
   Post,
-  Put
+  Put,
+  UseInterceptors
 } from '@nestjs/common';
 import { CriaUsuarioDTO } from './dto/CriaUsuario.dto';
 import { AtualizaUsuarioDTO } from './dto/AtualizaUsuario.dto';
 import { UsuarioService } from './usuario.service';
 import { ListaUsuarioDTO } from './dto/ListaUsuario.dto';
 import { HashearSenhaPipe } from '../../recursos/pipes/hashear-senha.pipe';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('/usuarios')
 @Catch()
@@ -36,13 +39,21 @@ export class UsuarioController {
   }
 
   @Get()
+  @UseInterceptors(CacheInterceptor)
+  @CacheTTL(60 * 15 * 1000)
   public async listaUsuario() {
     return this.usuarioService.listaUsuario();
   }
 
   @Put('/:id')
-  public async atualizaUsuario(@Param('id') id: string, @Body() novosDados: AtualizaUsuarioDTO) {
-    const usuarioAtualizado = await this.usuarioService.atualizaUsuario(id, novosDados);
+  public async atualizaUsuario(
+    @Param('id') id: string,
+    @Body() novosDados: AtualizaUsuarioDTO
+  ) {
+    const usuarioAtualizado = await this.usuarioService.atualizaUsuario(
+      id,
+      novosDados
+    );
 
     return {
       usuario: usuarioAtualizado,

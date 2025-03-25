@@ -15,6 +15,7 @@ import {
   AutenticacaoGuard,
   RequisicaoComUsuario
 } from '../autenticacao/autenticacao.guard';
+import { PedidoEntity } from './pedido.entity';
 
 @UseGuards(AutenticacaoGuard)
 @Controller('/pedidos')

@@ -12,7 +12,7 @@ import { PedidoModule } from './modulos/pedido/pedido.module';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { FiltroDeExcecaoGlobal } from './recursos/filtros/filtro-de-excecao-global';
 import { CacheModule } from '@nestjs/cache-manager';
-import { redisStore } from 'cache-manager-redis-store';
+import { redisStore } from 'cache-manager-redis-yet';
 import { AutenticacaoModule } from './modulos/autenticacao/autenticacao.module';
 import { LoggerGlobalInterceptor } from './recursos/interceptores/logger-global.interceptor';
 
@@ -30,7 +30,7 @@ import { LoggerGlobalInterceptor } from './recursos/interceptores/logger-global.
     PedidoModule,
     CacheModule.registerAsync({
       useFactory: async () => ({
-        store: await redisStore({ ttl: 60 * 1000 }) // Tempo de expiração do cache (1 m aqui)
+        store: await redisStore({ ttl: 60 * 1000 }) // Tempo de expiração do cache (1m aqui)
       }),
       isGlobal: true // Para ter acesso ao CacheModule em toda a aplicação
     }),
