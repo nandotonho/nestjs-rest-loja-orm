@@ -15,7 +15,7 @@ import { ProdutoService } from './produto.service';
 import { CACHE_MANAGER, CacheInterceptor } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { ProdutoEntity } from './produto.entity';
-import { CustomLogger } from 'src/recursos/customLogger/custom-logger.service';
+import { CustomLogger } from '../../recursos/customLogger/custom-logger.service';
 
 @Controller('/produtos')
 export class ProdutoController {

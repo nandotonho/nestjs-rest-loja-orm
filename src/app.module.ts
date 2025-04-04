@@ -21,7 +21,7 @@ import { LoggerGlobalInterceptor } from './recursos/interceptores/logger-global.
     UsuarioModule,
     ProdutoModule,
     ConfigModule.forRoot({
-      isGlobal: true,
+      isGlobal: true
     }),
     TypeOrmModule.forRootAsync({
       useClass: PostgresConfigService,

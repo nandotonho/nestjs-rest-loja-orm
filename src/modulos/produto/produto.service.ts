@@ -31,7 +31,7 @@ export class ProdutoService {
 
   public async buscaPorId(id: string) {
     if (!isUUID(id)) {
-      throw new NotFoundException('Usuário não existe');
+      throw new NotFoundException('Produto não existe');
     }
 
     const possivelProduto = await this.produtoRepository.findOne({
@@ -41,8 +41,6 @@ export class ProdutoService {
     if (!possivelProduto) {
       throw new NotFoundException('Produto não existe');
     }
-
-    console.log('Busca do produto pelo BD!');
 
     return possivelProduto;
   }

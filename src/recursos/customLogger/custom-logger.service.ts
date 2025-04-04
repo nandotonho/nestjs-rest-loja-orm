@@ -6,7 +6,9 @@ import { appendFileSync } from 'fs';
 @Injectable()
 export class CustomLogger extends ConsoleLogger {
   formataLog(nome: string, quantidadeDisponivel: number, valor: number) {
-    return `LOCAL: ${this.context} - NOME: ${nome} - QUANTIDADE: ${quantidadeDisponivel} - PREÇO: ${valor} - TIMESTAMP ${this.getTimestamp()}`;
+    return `LOCAL: ${
+      this.context
+    } - NOME: ${nome} - QUANTIDADE: ${quantidadeDisponivel} - PREÇO: ${valor} - TIMESTAMP ${this.getTimestamp()}`;
   }
 
   logColorido(produto: ProdutoEntity) {
